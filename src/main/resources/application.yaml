@@ -1,0 +1,35 @@
+server:
+  port: ${MYSHOP_SERVER_PORT:1126}
+
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: ${CONSUMER_BOOTSTRAP_SERVERS:localhost:29092}
+      group-id: ${NOTIFICATION_GROUP_ID:group_id_message_handler}
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      id: ${CONSUMER_ID:TEST}
+      max-poll-records: 1000
+    producer:
+      bootstrap-servers: ${PRODUCER_BOOTSTRAP_SERVERS:localhost:29092}
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      missing-topics-fatal: false
+      type: batch
+      concurrency: 10
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    topics:
+      push-message: ${PUSH_MESSAGE:paybox/server/#}
+      sub-message: ${SUB_MESSAGE:paybox.server.*}
+
+    groups:
+
+mqtt:
+  host: ${MQTT_HOST:tcp://localhost:1883}
+  client-id: ${MQTT_CLIENT_ID:paybox}
+  username: ${MQTT_USERNAME:paybox}
+  password: ${MQTT_PASSWORD:paybox}
+  sub-topic: ${MQTT_SUB_TOPIC:paybox/#}
+
